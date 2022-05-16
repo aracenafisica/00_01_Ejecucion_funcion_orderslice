@@ -86,7 +86,7 @@ Ruta del directorio de la data
 path_data = '/home/aracena/data/'
 
 '''
-Ruta donde reposa los archivos '.json' de los diferentes estudios
+Ruta donde reposa los archivos '.json' de la imagen funcional de los diferentes estudios
 '''
 # Estudio ds001454
 path_json_1 = opj(path_data,'ds001454','sub-01','ses-1','func')
@@ -105,11 +105,6 @@ Ruta donde reposan las imagenes de referencia de orden de adquisición de imagen
 '''
 path_expe = '/home/aracena/thesis_ds004101/00_fase0_tips_nibabel_funciones/'
 path_ref = opj(path_expe, '00_00_archivo_json_and_func_ordenslice','00_00_ejecucion_funcion','imagenes')
-```
-
-
-```python
-%matplotlib inline
 ```
 
 # Función 'order_slice'
@@ -145,10 +140,10 @@ def order_slice(json_arch):
     '''
     Creamos una lista de las imágenes de referencia de adquisición de cortes
     '''
-    lista_imagenes = [opj(path_ref,'GIF_SECUENCIAL_ASCENDENTE.gif'),
-                      opj(path_ref,'GIF_SECUENCIAL_DESCENDENTE.gif'),
-                      opj(path_ref,'GIF_INTERCALADO_PAR.gif'),
-                      opj(path_ref,'GIF_INTERCALADO_IMPAR.gif')]
+    lista_imagenes = [opj(path_ref,'SECUENCIAL_ASCENDENTE.png'),
+                      opj(path_ref,'SECUENCIAL_DESCENDENTE.png'),
+                      opj(path_ref,'INTERCALADO_PAR.png'),
+                      opj(path_ref,'INTERCALADO_IMPAR.png')]
 
     '''
     Extraemos información del arhivo .json
@@ -179,23 +174,23 @@ def order_slice(json_arch):
             print('Orden de adquisición de cortes secuenciales ascendente')
             slice_order = list(range(1, number_of_slices+1, 1))
             print(slice_timing)
-            display(Image(lista_imagenes[3]))
+            imagen_ref = lista_imagenes[3]
         else:
             print('Orden de adquisición de cortes intercalados inferior/pares')
             slice_order = list(range(1, number_of_slices+1, 2)) + list(range(2, number_of_slices+1, 2))
             print(slice_timing)
-            display(Image(lista_imagenes[2]))
+            imagen_ref = lista_imagenes[2]
     else:
         if segu == maxi - time_first:
             print('Orden de adquisición de cortes secuenciales descendente')
             slice_order = list(range(snumber_of_slices,0 , -1))
             print(slice_timing)
-            display(Image(lista_imagenes[1]))
+            imagen_ref = lista_imagenes[1]
         else:
             print('Orden de adquisición de cortes intercalados inferior+1/impares: \n')
             slice_order = list(range(2, number_of_slices+1, 2))+list(range(1, number_of_slices+1, 2))
             print(slice_timing)
-            display(Image(lista_imagenes[3]))
+            imagen_ref = lista_imagenes[3]
     
     '''
     Creamos un DataFrame (DF) con la información del archivo '.json'
@@ -217,21 +212,22 @@ def order_slice(json_arch):
     df_json = pd.DataFrame(lista_json)
     df_json.columns = [('IRMf '+ lista_json[0])]
     df_json.index = [list_dic]
-    display(df_json)
     
-    return slice_order,TR, number_of_slices, df_json
+    return slice_order,TR, number_of_slices, df_json, imagen_ref
 ```
 
 # Creamos diccionario con las imagenes 
 
 
 ```python
-archivos_json = {'ds001454': json_arch_ds001454, 'ds002422': json_arch_ds002422, 'ds004101': json_arch_ds004101  }
+archivos_json = {'ds001454_fisiologica': json_arch_ds001454,
+                 'ds002422_fisiologica': json_arch_ds002422, 
+                 'ds004101_fisiologica': json_arch_ds004101}
 ```
 
 
 ```python
-archivos_json['ds001454']
+archivos_json['ds001454_fisiologica']
 ```
 
 
@@ -246,23 +242,32 @@ archivos_json['ds001454']
 
 ```python
 for i, imjs in enumerate(archivos_json):
-    print('----------------------------------------------------------------------------------------------------\n')
+    print('---------------------------------------------------------'+
+          '--------------------------------------------------------\n')
     print('Imagen del estudio '+imjs)
     datos_json_img = order_slice(json_arch= archivos_json[imjs])
-    print('Tiempo de repetición (TR)= ', datos_json_img[1])
-    print('NUmero de cortes = ', datos_json_img[2])
+    print('\nTiempo de repetición (TR)= ', datos_json_img[1])
+    print('\nNúmero de cortes = ', datos_json_img[2])
+    display(Image(datos_json_img[4], width=450, height=450))
+    display(datos_json_img[3])
 ```
 
-    ----------------------------------------------------------------------------------------------------
+    -----------------------------------------------------------------------------------------------------------------
     
-    Imagen del estudio ds001454
+    Imagen del estudio ds001454_fisiologica
     Orden de adquisición de cortes intercalados inferior+1/impares: 
     
     [1, 0, 1.055, 0.055, 1.11, 0.11, 1.165, 0.165, 1.22, 0.2225, 1.2775, 0.2775, 1.3325, 0.3325, 1.3875, 0.3875, 1.4425, 0.4425, 1.4975, 0.5, 1.555, 0.555, 1.61, 0.61, 1.665, 0.665, 1.72, 0.72, 1.7775, 0.7775, 1.8325, 0.8325, 1.8875, 0.8875, 1.9425, 0.9425]
+    
+    Tiempo de repetición (TR)=  2
+    
+    Número de cortes =  36
 
 
 
-    <IPython.core.display.Image object>
+    
+![png](output_14_1.png)
+    
 
 
 
@@ -417,18 +422,22 @@ for i, imjs in enumerate(archivos_json):
 </div>
 
 
-    Tiempo de repetición (TR)=  2
-    NUmero de cortes =  36
-    ----------------------------------------------------------------------------------------------------
+    -----------------------------------------------------------------------------------------------------------------
     
-    Imagen del estudio ds002422
+    Imagen del estudio ds002422_fisiologica
     Orden de adquisición de cortes intercalados inferior+1/impares: 
     
     [1.5375, 0, 1.6225, 0.085, 1.7075, 0.1725, 1.7925, 0.2575, 1.8775, 0.3425, 1.9625, 0.4275, 2.05, 0.5125, 2.135, 0.5975, 2.22, 0.6825, 2.305, 0.77, 2.39, 0.855, 2.475, 0.94, 2.56, 1.025, 2.6475, 1.11, 2.7325, 1.195, 2.8175, 1.28, 2.9025, 1.3675, 2.9875, 1.4525]
+    
+    Tiempo de repetición (TR)=  3.56
+    
+    Número de cortes =  36
 
 
 
-    <IPython.core.display.Image object>
+    
+![png](output_14_4.png)
+    
 
 
 
@@ -619,18 +628,22 @@ for i, imjs in enumerate(archivos_json):
 </div>
 
 
-    Tiempo de repetición (TR)=  3.56
-    NUmero de cortes =  36
-    ----------------------------------------------------------------------------------------------------
+    -----------------------------------------------------------------------------------------------------------------
     
-    Imagen del estudio ds004101
+    Imagen del estudio ds004101_fisiologica
     Orden de adquisición de cortes intercalados inferior+1/impares: 
     
     [1.205, 0, 1.2725, 0.0675, 1.3375, 0.135, 1.405, 0.2, 1.4725, 0.2675, 1.54, 0.335, 1.605, 0.4025, 1.6725, 0.4675, 1.74, 0.535, 1.8075, 0.6025, 1.875, 0.67, 1.94, 0.7375, 2.0075, 0.8025, 2.075, 0.87, 2.1425, 0.9375, 2.2075, 1.005, 2.275, 1.07, 2.3425, 1.1375]
+    
+    Tiempo de repetición (TR)=  2.4
+    
+    Número de cortes =  36
 
 
 
-    <IPython.core.display.Image object>
+    
+![png](output_14_7.png)
+    
 
 
 
@@ -765,10 +778,6 @@ for i, imjs in enumerate(archivos_json):
 </div>
 
 
-    Tiempo de repetición (TR)=  2.4
-    NUmero de cortes =  36
-
-
 # Tiempo de ejecución
 
 
@@ -788,13 +797,13 @@ print('--------------------------------------')
     --------------------------------------
     tiempo de ejecución
     
-     1.325 seg
-     0.022 min
+     0.888 seg
+     0.015 min
     --------------------------------------
     tiempo de ejecución del sistema y CPU
     
-     0.956 seg
-     0.016 min
+     1.023 seg
+     0.017 min
     --------------------------------------
 
 
