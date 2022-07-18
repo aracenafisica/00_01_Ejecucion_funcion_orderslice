@@ -14,7 +14,7 @@
 
 El siguiente Script de Python forma parte del trabajo especial de grado.
 
-Profesor Guía:
+Profesora Guía:
 
 *PhD María Daniela Cornejo*
 
@@ -55,7 +55,7 @@ Imágenes realizadas por el autor del script, con apoyo de imagen 3D de corte sa
 
  # Ejecución de la  función 'order_slice' para diversas imágenes
 
-# Importamos librerias
+## Importamos librerias
 
 
 
@@ -76,7 +76,7 @@ import pandas as pd # librería especializada en el manejo y análisis de estruc
 import json # Módulo para trabajar con datos JSON
 ```
 
-# Definimos Parametros 
+## Definimos Parametros 
 
 
 ```python
@@ -107,7 +107,7 @@ path_expe = '/home/aracena/thesis_ds004101/00_fase0_tips_nibabel_funciones/'
 path_ref = opj(path_expe, '00_00_archivo_json_and_func_ordenslice','00_00_ejecucion_funcion','imagenes')
 ```
 
-# Función 'order_slice'
+## Función 'order_slice'
 
 
 ```python
@@ -216,18 +216,18 @@ def order_slice(json_arch):
     return slice_order,TR, number_of_slices, df_json, imagen_ref
 ```
 
-# Creamos diccionario con las imagenes 
+## Creamos diccionario con las imagenes 
 
 
 ```python
-archivos_json = {'ds001454_fisiologica': json_arch_ds001454,
-                 'ds002422_fisiologica': json_arch_ds002422, 
-                 'ds004101_fisiologica': json_arch_ds004101}
+archivos_json = {'ds001454_funcional': json_arch_ds001454,
+                 'ds002422_funcional': json_arch_ds002422, 
+                 'ds004101_funcional': json_arch_ds004101}
 ```
 
 
 ```python
-archivos_json['ds001454_fisiologica']
+archivos_json['ds001454_funcional']
 ```
 
 
@@ -237,7 +237,7 @@ archivos_json['ds001454_fisiologica']
 
 
 
-# Ejecutamos función
+## Ejecutamos función
 
 
 ```python
@@ -248,13 +248,13 @@ for i, imjs in enumerate(archivos_json):
     datos_json_img = order_slice(json_arch= archivos_json[imjs])
     print('\nTiempo de repetición (TR)= ', datos_json_img[1])
     print('\nNúmero de cortes = ', datos_json_img[2])
-    display(Image(datos_json_img[4], width=450, height=450))
+    display(Image(datos_json_img[4], width=400, height=400))
     display(datos_json_img[3])
 ```
 
     -----------------------------------------------------------------------------------------------------------------
     
-    Imagen del estudio ds001454_fisiologica
+    Imagen del estudio ds001454_funcional
     Orden de adquisición de cortes intercalados inferior+1/impares: 
     
     [1, 0, 1.055, 0.055, 1.11, 0.11, 1.165, 0.165, 1.22, 0.2225, 1.2775, 0.2775, 1.3325, 0.3325, 1.3875, 0.3875, 1.4425, 0.4425, 1.4975, 0.5, 1.555, 0.555, 1.61, 0.61, 1.665, 0.665, 1.72, 0.72, 1.7775, 0.7775, 1.8325, 0.8325, 1.8875, 0.8875, 1.9425, 0.9425]
@@ -424,7 +424,7 @@ for i, imjs in enumerate(archivos_json):
 
     -----------------------------------------------------------------------------------------------------------------
     
-    Imagen del estudio ds002422_fisiologica
+    Imagen del estudio ds002422_funcional
     Orden de adquisición de cortes intercalados inferior+1/impares: 
     
     [1.5375, 0, 1.6225, 0.085, 1.7075, 0.1725, 1.7925, 0.2575, 1.8775, 0.3425, 1.9625, 0.4275, 2.05, 0.5125, 2.135, 0.5975, 2.22, 0.6825, 2.305, 0.77, 2.39, 0.855, 2.475, 0.94, 2.56, 1.025, 2.6475, 1.11, 2.7325, 1.195, 2.8175, 1.28, 2.9025, 1.3675, 2.9875, 1.4525]
@@ -630,7 +630,7 @@ for i, imjs in enumerate(archivos_json):
 
     -----------------------------------------------------------------------------------------------------------------
     
-    Imagen del estudio ds004101_fisiologica
+    Imagen del estudio ds004101_funcional
     Orden de adquisición de cortes intercalados inferior+1/impares: 
     
     [1.205, 0, 1.2725, 0.0675, 1.3375, 0.135, 1.405, 0.2, 1.4725, 0.2675, 1.54, 0.335, 1.605, 0.4025, 1.6725, 0.4675, 1.74, 0.535, 1.8075, 0.6025, 1.875, 0.67, 1.94, 0.7375, 2.0075, 0.8025, 2.075, 0.87, 2.1425, 0.9375, 2.2075, 1.005, 2.275, 1.07, 2.3425, 1.1375]
@@ -778,7 +778,7 @@ for i, imjs in enumerate(archivos_json):
 </div>
 
 
-# Tiempo de ejecución
+## Tiempo de ejecución
 
 
 ```python
@@ -797,14 +797,14 @@ print('--------------------------------------')
     --------------------------------------
     tiempo de ejecución
     
-     0.888 seg
-     0.015 min
+     0.957 seg
+     0.016 min
     --------------------------------------
     tiempo de ejecución del sistema y CPU
     
-     1.023 seg
+     1.007 seg
      0.017 min
     --------------------------------------
 
 
-# Fin
+## Fin
